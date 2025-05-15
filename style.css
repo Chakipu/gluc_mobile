@@ -49,46 +49,39 @@ main {
   border-radius: 10px;
 }
 
-.table-wrapper {
-  overflow-x: auto;
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
   margin-top: 20px;
-  margin-bottom: 20px;
 }
 
-table {
+.card {
+  background: var(--card);
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  width: calc(33% - 10px);
+  box-sizing: border-box;
+}
+
+.card input, .card select {
   width: 100%;
-  border-collapse: collapse;
-  min-width: 600px;
-}
-
-th, td {
-  border: 1px solid #ccc;
-  padding: 8px;
-  text-align: center;
-}
-
-select, input {
   padding: 5px;
-  width: 100%;
+  margin-bottom: 5px;
 }
 
-tfoot td {
-  font-weight: bold;
-}
-
-.add-row {
-  margin-top: 10px;
-  padding: 10px 15px;
-  font-size: 16px;
-  background-color: var(--button);
+.card button {
+  background: var(--delete);
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 4px;
+  padding: 5px 10px;
   cursor: pointer;
 }
 
-.add-row:hover {
-  background-color: var(--button-hover);
+.card button:hover {
+  background: var(--delete-hover);
 }
 
 .banniere {
@@ -119,15 +112,17 @@ tfoot td {
   background: var(--button-hover);
 }
 
-.delete-row {
-  cursor: pointer;
-  font-weight: bold;
-  color: var(--delete);
+.add-row {
+  margin-top: 10px;
+  padding: 10px 15px;
+  font-size: 16px;
+  background-color: var(--button);
+  color: white;
   border: none;
-  background: none;
-  font-size: 20px;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
-.delete-row:hover {
-  color: var(--delete-hover);
+.add-row:hover {
+  background-color: var(--button-hover);
 }

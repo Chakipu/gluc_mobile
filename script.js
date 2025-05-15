@@ -54,83 +54,89 @@ const produitsLaitiers = [
   { categorie: "Produits Laitiers", aliment: "Yaourt avec fruits", glucides: 15 }
 ];
 
-function ajouterLigne() {
-  const tbody = document.getElementById("repas-body");
-  const tr = document.createElement("tr");
+function ajouterCarteRepas() {
+  const container = document.getElementById("repas-cards");
+  const card = document.createElement("div");
+  card.className = "card";
 
-  tr.innerHTML = `
-    <td><input type="text" class="categorie" readonly></td>
-    <td><select><option value="">-- Choisir --</option>
+  card.innerHTML = `
+    <input type="text" class="categorie" readonly>
+    <select>
+      <option value="">-- Choisir --</option>
       ${aliments.map(a => `<option value="${a.aliment}" data-cat="${a.categorie}" data-glucides="${a.glucides}">${a.aliment}</option>`).join("")}
-    </select></td>
-    <td><input type="number" class="quantite" min="0"></td>
-    <td><input type="number" class="glucides-unit" readonly></td>
-    <td><input type="number" class="glucides-total" readonly></td>
-    <td><button class="delete-row" onclick="supprimerLigne(this)">❌</button></td>`;
+    </select>
+    <input type="number" class="quantite" min="0">
+    <input type="number" class="glucides-unit" readonly>
+    <input type="number" class="glucides-total" readonly>
+    <button class="delete-row" onclick="supprimerCarte(this)">❌</button>
+  `;
 
-  tbody.appendChild(tr);
+  container.appendChild(card);
 
-  tr.querySelector("select").onchange = function () {
+  card.querySelector("select").onchange = function () {
     const option = this.selectedOptions[0];
-    tr.querySelector(".categorie").value = option.dataset.cat;
-    tr.querySelector(".glucides-unit").value = option.dataset.glucides;
-    calculerGlucides(tr);
+    card.querySelector(".categorie").value = option.dataset.cat;
+    card.querySelector(".glucides-unit").value = option.dataset.glucides;
+    calculerGlucidesCarte(card);
   };
 
-  tr.querySelector(".quantite").oninput = () => calculerGlucides(tr);
+  card.querySelector(".quantite").oninput = () => calculerGlucidesCarte(card);
 }
 
-function ajouterPortion() {
-  ajouterPortionGenerique(portions, "portion-body");
+function ajouterCartePortion() {
+  ajouterCarteGenerique(portions, "portion-cards");
 }
 
-function ajouterLaitier() {
-  ajouterPortionGenerique(produitsLaitiers, "laitier-body");
+function ajouterCarteLaitier() {
+  ajouterCarteGenerique(produitsLaitiers, "laitier-cards");
 }
 
-function ajouterPortionGenerique(liste, tbodyId) {
-  const tbody = document.getElementById(tbodyId);
-  const tr = document.createElement("tr");
+function ajouterCarteGenerique(liste, containerId) {
+  const container = document.getElementById(containerId);
+  const card = document.createElement("div");
+  card.className = "card";
 
-  tr.innerHTML = `
-    <td><select><option value="">-- Choisir --</option>
+  card.innerHTML = `
+    <select>
+      <option value="">-- Choisir --</option>
       ${liste.map(p => `<option value="${p.aliment}" data-glucides="${p.glucides}">${p.aliment}</option>`).join("")}
-    </select></td>
-    <td><input type="number" class="glucides-portion" readonly></td>
-    <td><input type="number" class="nb-portions" min="0"></td>
-    <td><input type="number" class="glucides-total" readonly></td>
-    <td><button class="delete-row" onclick="supprimerLigne(this)">❌</button></td>`;
+    </select>
+    <input type="number" class="glucides-portion" readonly>
+    <input type="number" class="nb-portions" min="0">
+    <input type="number" class="glucides-total" readonly>
+    <button class="delete-row" onclick="supprimerCarte(this)">❌</button>
+  `;
 
-  tbody.appendChild(tr);
+  container.appendChild(card);
 
-  tr.querySelector("select").onchange = function () {
+  card.querySelector("select").onchange = function () {
     const glucides = this.selectedOptions[0].dataset.glucides;
-    tr.querySelector(".glucides-portion").value = glucides;
-    calculerGlucidesPortion(tr);
+    card.querySelector(".glucides-portion").value = glucides;
+    calculerGlucidesCartePortion(card);
   };
 
-  tr.querySelector(".nb-portions").oninput = () => calculerGlucidesPortion(tr);
+  card.querySelector(".nb-portions").oninput = () => calculerGlucidesCartePortion(card);
 }
 
-function supprimerLigne(btn) {
-  const tr = btn.closest("tr");
-  tr.remove();
+function supprimerCarte(btn) {
+  const card = btn.closest(".card");
+  card.remove();
   calculerTotalGlucides();
 }
 
-function calculerGlucides(row) {
-  const qte = parseFloat(row.querySelector(".quantite").value) || 0;
-  const g = parseFloat(row.querySelector(".glucides-unit").value) || 0;
+function calculerGlucidesCarte(card) {
+  const qte = parseFloat(card.querySelector(".quantite").value) || 0;
+  const g = parseFloat(card.querySelector(".glucides-unit").value) || 0;
   const total = (qte * g) / 100;
-  row.querySelector(".glucides-total").value = total.toFixed(1);
+  card.querySelector(".glucides-total").value = total.toFixed(1);
   calculerTotalGlucides();
 }
 
-function calculerGlucidesPortion(row) {
-  const n = parseFloat(row.querySelector(".nb-portions").value) || 0;
-  const g = parseFloat(row.querySelector(".glucides-portion").value) || 0;
+function calculerGlucidesCartePortion(card) {
+  const n = parseFloat(card.querySelector(".nb-portions").value) || 0;
+  const g = parseFloat(card.querySelector(".glucides-portion").value) || 0;
   const total = n * g;
-  row.querySelector(".glucides-total").value = total.toFixed(1);
+  card.querySelector(".glucides-total").value = total.toFixed(1);
   calculerTotalGlucides();
 }
 
@@ -141,6 +147,6 @@ function calculerTotalGlucides() {
   document.getElementById("total-glucides").textContent = total.toFixed(1);
 }
 
-ajouterLigne();
-ajouterPortion();
-ajouterLaitier();
+ajouterCarteRepas();
+ajouterCartePortion();
+ajouterCarteLaitier();
