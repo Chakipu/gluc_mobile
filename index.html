@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Calcul des glucides pour les repas">
+  <meta name="keywords" content="glucides, repas, calcul, santé">
+  <title>Calcul des glucides - Repas</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="banniere">
+    <button class="toggle-darkmode" onclick="document.body.classList.toggle('dark')">🌙</button>
+    Calcul des glucides – Repas
+  </div>
+
+  <header>
+    <h1>🩺 Suivi des glucides</h1>
+    <p>Calcule facilement les glucides de ton repas</p>
+  </header>
+
+  <main>
+    <div class="total-glucides-haut">
+      <h2>Total glucides consommés</h2>
+      <p><strong id="total-glucides">0</strong> g</p>
+    </div>
+    <h2>Tableau 1 : Glucides par 100g</h2>
+    <div class="table-wrapper">
+      <table id="repas-table">
+        <thead>
+          <tr>
+            <th>Catégorie</th>
+            <th>Aliment</th>
+            <th>Quantité (g)</th>
+            <th>Glucides / 100g</th>
+            <th>Glucides consommés</th>
+            <th>Supprimer</th>
+          </tr>
+        </thead>
+        <tbody id="repas-body"></tbody>
+      </table>
+      <button class="add-row" onclick="ajouterLigne()">➕ Ajouter un aliment</button>
+    </div>
+
+    <h2>Fruits par portion/unité</h2>
+    <div class="table-wrapper">
+      <table id="portion-table">
+        <thead>
+          <tr>
+            <th>Aliment</th>
+            <th>Glucides / portion</th>
+            <th>Nombre de portions</th>
+            <th>Glucides consommés</th>
+            <th>Supprimer</th>
+          </tr>
+        </thead>
+        <tbody id="portion-body"></tbody>
+      </table>
+      <button class="add-row" onclick="ajouterPortion()">➕ Ajouter une portion</button>
+    </div>
+
+    <h2>Produits Laitiers</h2>
+    <div class="table-wrapper">
+      <table id="laitier-table">
+        <thead>
+          <tr>
+            <th>Aliment</th>
+            <th>Glucides / portion</th>
+            <th>Nombre de portions</th>
+            <th>Glucides consommés</th>
+            <th>Supprimer</th>
+          </tr>
+        </thead>
+        <tbody id="laitier-body"></tbody>
+      </table>
+      <button class="add-row" onclick="ajouterLaitier()">➕ Ajouter un produit laitier</button>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
