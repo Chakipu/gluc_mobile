@@ -22,7 +22,6 @@ body.dark {
 
 body {
   font-family: sans-serif;
-  padding: 20px;
   margin: 0;
   background: url('images/fond.svg') no-repeat center center fixed;
   background-size: cover;
@@ -32,126 +31,140 @@ body {
 
 header {
   background: var(--card);
-  padding: 20px;
+  padding: 1rem;
   text-align: center;
   box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
 h1 {
-  font-size: 28px;
+  font-size: 1.75rem;
   margin: 0;
 }
 
 main {
   background: var(--card);
-  padding: 20px;
-  margin-top: 20px;
+  padding: 1rem;
+  margin-top: 80px;
   border-radius: 10px;
-}
-
-.table-wrapper {
-  overflow-x: auto;
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  min-width: 600px;
-}
-
-th, td {
-  border: 1px solid #ccc;
-  padding: 8px;
-  text-align: center;
-}
-
-select, input {
-  padding: 5px;
-  width: 100%;
-}
-
-tfoot td {
-  font-weight: bold;
-}
-
-.add-row {
-  margin-top: 10px;
-  padding: 10px 15px;
-  font-size: 16px;
-  background-color: var(--button);
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.add-row:hover {
-  background-color: var(--button-hover);
 }
 
 .banniere {
   position: fixed;
   top: 0;
   width: 100%;
-  background-color: #f5f5f5;
+  background-color: var(--banner);
   color: #000;
-  padding: 10px 20px;
+  padding: 0.75rem 1rem;
   display: flex;
   align-items: center;
-  justify-content: center;
-  font-size: 20px;
+  justify-content: space-between;
+  font-size: 1.25rem;
   font-weight: bold;
   z-index: 999;
 }
 
 .toggle-darkmode {
-  position: absolute;
-  left: 20px;
   background: none;
   border: none;
-  font-size: 20px;
+  font-size: 1.25rem;
   cursor: pointer;
+  color: inherit;
 }
 
 .toggle-darkmode:hover {
   background: var(--button-hover);
+  color: #fff;
 }
 
-.delete-row {
-  cursor: pointer;
-  font-weight: bold;
-  color: var(--delete);
+.section {
+  padding: 1rem;
+}
+
+.glucide-total {
+  background-color: #e6f7ff;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.card {
+  background-color: var(--card);
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.card label {
+  display: block;
+  margin-top: 0.5rem;
+}
+
+.card input,
+.card select {
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 0.25rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+.add-button {
+  padding: 0.75rem 1rem;
+  background-color: var(--button);
+  color: white;
   border: none;
-  background: none;
-  font-size: 20px;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 0.5rem;
 }
 
-.delete-row:hover {
-  color: var(--delete-hover);
+.add-button:hover {
+  background-color: var(--button-hover);
 }
 
-/* Media query pour les petits écrans */
+.delete-button {
+  background-color: var(--delete);
+  color: white;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  margin-top: 0.5rem;
+}
+
+.delete-button:hover {
+  background-color: var(--delete-hover);
+}
+
 @media (max-width: 600px) {
-  body {
-    font-size: 14px;
-  }
-
   h1 {
-    font-size: 22px;
+    font-size: 1.5rem;
   }
 
-  .add-row {
-    width: 100%;
-    margin-bottom: 10px;
+  .add-button {
+    font-size: 1rem;
+    padding: 0.75rem;
   }
 
-  table {
-    min-width: 100%;
-  }
-
-  th, td {
-    padding: 6px;
+  .card input,
+  .card select {
+    font-size: 0.95rem;
   }
 }
