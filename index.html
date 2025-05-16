@@ -79,22 +79,25 @@
   </main>
 
   <script src="script.js"></script>
-  <script>
-    const toggle = document.getElementById('modeToggle');
-    const userTheme = localStorage.getItem('theme');
+<script>
+  const toggleButton = document.getElementById('modeToggle');
 
-    // Applique le thème sauvegardé si présent
-    if (userTheme === 'dark') {
-      document.body.classList.add('dark');
-      toggle.textContent = '☀️';
-    }
+  // Appliquer le thème sauvegardé si existant
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme === 'dark') {
+    document.body.classList.add('dark');
+    toggleButton.textContent = '☀️';
+  } else {
+    toggleButton.textContent = '🌙';
+  }
 
-    toggle.addEventListener('click', () => {
-      document.body.classList.toggle('dark');
-      const isDark = document.body.classList.contains('dark');
-      toggle.textContent = isDark ? '☀️' : '🌙';
-      localStorage.setItem('theme', isDark ? 'dark' : 'light');
-    });
-  </script>
+  // Changer de thème au clic
+  toggleButton.addEventListener('click', () => {
+    document.body.classList.toggle('dark');
+    const isDark = document.body.classList.contains('dark');
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    toggleButton.textContent = isDark ? '☀️' : '🌙';
+  });
+</script>
 </body>
 </html>
