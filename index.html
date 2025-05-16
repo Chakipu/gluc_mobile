@@ -1,98 +1,17 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Calcul des glucides pour les repas - version mobile" />
-  <meta name="keywords" content="glucides, repas, mobile, santé" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="DEV Calcul des glucides pour les repas">
+  <meta name="keywords" content="glucides, repas, calcul, santé">
   <title>Calcul des glucides - Repas</title>
-  <link rel="stylesheet" href="styles.css" />
-  <style>
-    body {
-      font-family: sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-
-    .banniere {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem;
-      background-color: #4caf50;
-      color: white;
-    }
-
-    header {
-      text-align: center;
-      padding: 1rem;
-    }
-
-    main.section {
-      padding: 1rem;
-    }
-
-    .glucide-total {
-      background-color: #e6f7ff;
-      padding: 1rem;
-      margin-bottom: 1rem;
-      border-radius: 8px;
-      text-align: center;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 1rem;
-    }
-
-    th, td {
-      border: 1px solid #ccc;
-      padding: 8px;
-      text-align: center;
-    }
-
-    th {
-      background-color: #f0f0f0;
-    }
-
-    select, input[type="number"], input[type="text"] {
-      width: 100%;
-      padding: 5px;
-      box-sizing: border-box;
-    }
-
-    .add-button {
-      padding: 0.5rem 1rem;
-      background-color: #2196f3;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-
-    .add-button:hover {
-      background-color: #1976d2;
-    }
-
-    .delete-row {
-      cursor: pointer;
-      font-weight: bold;
-      color: #ff4d4d;
-      border: none;
-      background: none;
-      font-size: 18px;
-    }
-
-    .delete-row:hover {
-      color: #cc0000;
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div class="banniere">
-    <span>Calcul des glucides</span>
     <button class="toggle-darkmode" onclick="document.body.classList.toggle('dark')">🌙</button>
+    Calcul des glucides – Repas
   </div>
 
   <header>
@@ -100,83 +19,69 @@
     <p>Calcule facilement les glucides de ton repas</p>
   </header>
 
-  <main class="section">
-    <div class="glucide-total">
+  <main>
+    <div class="total-glucides-haut">
       <h2>Total glucides consommés</h2>
       <p><strong id="total-glucides">0</strong> g</p>
     </div>
-
-    <section id="repas-section">
-      <h2>Glucides par 100g</h2>
-      <table>
+    <h2>Tableau 1 : Glucides par 100g</h2>
+    <div class="table-wrapper">
+      <table id="repas-table">
         <thead>
           <tr>
             <th>Catégorie</th>
             <th>Aliment</th>
             <th>Quantité (g)</th>
             <th>Glucides / 100g</th>
-            <th>Total glucides</th>
+            <th>Glucides consommés</th>
             <th>Supprimer</th>
           </tr>
         </thead>
         <tbody id="repas-body"></tbody>
       </table>
-      <button class="add-button" onclick="ajouterLigne()">+ Ajouter un aliment</button>
-    </section>
+      <button class="add-row" onclick="ajouterLigne()">➕ Ajouter un aliment</button>
+    </div>
 
-    <section id="portion-section">
-      <h2>Fruits par portion</h2>
-      <table>
+    <h2>Fruits par portion/unité</h2>
+    <div class="table-wrapper">
+      <table id="portion-table">
         <thead>
           <tr>
             <th>Aliment</th>
             <th>Glucides / portion</th>
             <th>Nombre de portions</th>
-            <th>Total glucides</th>
+            <th>Glucides consommés</th>
             <th>Supprimer</th>
           </tr>
         </thead>
         <tbody id="portion-body"></tbody>
       </table>
-      <button class="add-button" onclick="ajouterPortion()">+ Ajouter une portion</button>
-    </section>
+      <button class="add-row" onclick="ajouterPortion()">➕ Ajouter une portion</button>
+    </div>
 
-    <section id="laitier-section">
-      <h2>Produits laitiers</h2>
-      <table>
+    <h2>Produits Laitiers</h2>
+    <div class="table-wrapper">
+      <table id="laitier-table">
         <thead>
           <tr>
             <th>Aliment</th>
             <th>Glucides / portion</th>
             <th>Nombre de portions</th>
-            <th>Total glucides</th>
+            <th>Glucides consommés</th>
             <th>Supprimer</th>
           </tr>
         </thead>
         <tbody id="laitier-body"></tbody>
       </table>
-      <button class="add-button" onclick="ajouterLaitier()">+ Ajouter un produit laitier</button>
-    </section>
+      <button class="add-row" onclick="ajouterLaitier()">➕ Ajouter un produit laitier</button>
+    </div>
   </main>
 
   <script src="script.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      // Détecter le mode sombre selon les préférences systèmes
-      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.body.classList.add('dark');
-      } else {
-        document.body.classList.remove('dark');
-      }
-
-      // Optionnel : écouter les changements de préférence en temps réel
-      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-        if (e.matches) {
-          document.body.classList.add('dark');
-        } else {
-          document.body.classList.remove('dark');
-        }
-      });
+    // Forcer le mode sombre
+    document.addEventListener('DOMContentLoaded', function() {
+      document.body.classList.add('dark');
     });
   </script>
 </body>

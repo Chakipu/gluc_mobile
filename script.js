@@ -46,7 +46,6 @@ const portions = [
   { categorie: "Fruits", aliment: "2 figues sèches", glucides: 15 },
   { categorie: "Fruits", aliment: "2 dattes sèches", glucides: 15 },
   { categorie: "Fruits", aliment: "2 à 3 pruneaux", glucides: 15 }
-  // ... etc, garde toute ta liste ici ...
 ];
 
 const produitsLaitiers = [
@@ -55,159 +54,106 @@ const produitsLaitiers = [
   { categorie: "Produits Laitiers", aliment: "Yaourt avec fruits", glucides: 15 }
 ];
 
-// Conteneurs principaux pour ajouter les cartes
-const repasContainer = document.getElementById("repas-body");
-const portionContainer = document.getElementById("portion-body");
-const laitierContainer = document.getElementById("laitier-body");
+function ajouterLigne() {
+  const tbody = document.getElementById("repas-body");
+  const tr = document.createElement("tr");
 
-// Fonction pour créer carte aliment (féculents, etc)
-function creerCarteAliment() {
-  const card = document.createElement("div");
-  card.className = "card aliment-card";
+  tr.innerHTML = `
+    <td><input type="text" class="categorie" readonly></td>
+    <td><select><option value="">-- Choisir --</option>
+      ${aliments.map(a => `<option value="${a.aliment}" data-cat="${a.categorie}" data-glucides="${a.glucides}">${a.aliment}</option>`).join("")}
+    </select></td>
+    <td><input type="number" class="quantite" min="0"></td>
+    <td><input type="number" class="glucides-unit" readonly></td>
+    <td><input type="number" class="glucides-total" readonly></td>
+    <td><button class="delete-row" onclick="supprimerLigne(this)">❌</button></td>`;
 
-  card.innerHTML = `
-    <label>
-      Catégorie
-      <input type="text" class="categorie" readonly>
-    </label>
-    <label>
-      Aliment
-      <select class="select-aliment">
-        <option value="">-- Choisir --</option>
-        ${aliments.map(a => `<option value="${a.aliment}" data-cat="${a.categorie}" data-glucides="${a.glucides}">${a.aliment}</option>`).join("")}
-      </select>
-    </label>
-    <label>
-      Quantité (g)
-      <input type="number" class="quantite" min="0" value="0">
-    </label>
-    <label>
-      Glucides / 100g
-      <input type="number" class="glucides-unit" readonly>
-    </label>
-    <label>
-      Glucides consommés
-      <input type="number" class="glucides-total" readonly>
-    </label>
-    <button class="delete-row">❌ Supprimer</button>
-  `;
+  tbody.appendChild(tr);
 
-  // Événements
-  const select = card.querySelector(".select-aliment");
-  const quantiteInput = card.querySelector(".quantite");
-  const categorieInput = card.querySelector(".categorie");
-  const glucidesUnitInput = card.querySelector(".glucides-unit");
-  const glucidesTotalInput = card.querySelector(".glucides-total");
-  const deleteBtn = card.querySelector(".delete-row");
+  tr.querySelector("select").onchange = function () {
+    const option = this.selectedOptions[0];
+    tr.querySelector(".categorie").value = option.dataset.cat;
+    tr.querySelector(".glucides-unit").value = option.dataset.glucides;
+    calculerGlucides(tr);
+  };
 
-  select.addEventListener("change", () => {
-    const option = select.selectedOptions[0];
-    if (option) {
-      categorieInput.value = option.dataset.cat || "";
-      glucidesUnitInput.value = option.dataset.glucides || 0;
-    } else {
-      categorieInput.value = "";
-      glucidesUnitInput.value = 0;
-    }
-    calculerGlucidesCarte();
-  });
-
-  quantiteInput.addEventListener("input", calculerGlucidesCarte);
-
-  deleteBtn.addEventListener("click", () => {
-    card.remove();
-    calculerTotalGlucides();
-  });
-
-  function calculerGlucidesCarte() {
-    const qte = parseFloat(quantiteInput.value) || 0;
-    const g = parseFloat(glucidesUnitInput.value) || 0;
-    const total = (qte * g) / 100;
-    glucidesTotalInput.value = total.toFixed(1);
-    calculerTotalGlucides();
-  }
-
-  repasContainer.appendChild(card);
+  tr.querySelector(".quantite").oninput = () => calculerGlucides(tr);
 }
 
-// Fonction générique pour fruits et produits laitiers
-function creerCartePortion(liste, container) {
-  const card = document.createElement("div");
-  card.className = "card portion-card";
-
-  card.innerHTML = `
-    <label>
-      Aliment
-      <select class="select-aliment">
-        <option value="">-- Choisir --</option>
-        ${liste.map(p => `<option value="${p.aliment}" data-glucides="${p.glucides}">${p.aliment}</option>`).join("")}
-      </select>
-    </label>
-    <label>
-      Glucides / portion
-      <input type="number" class="glucides-portion" readonly>
-    </label>
-    <label>
-      Nombre de portions
-      <input type="number" class="nb-portions" min="0" value="0">
-    </label>
-    <label>
-      Glucides consommés
-      <input type="number" class="glucides-total" readonly>
-    </label>
-    <button class="delete-row">❌ Supprimer</button>
-  `;
-
-  const select = card.querySelector(".select-aliment");
-  const glucidesPortionInput = card.querySelector(".glucides-portion");
-  const nbPortionsInput = card.querySelector(".nb-portions");
-  const glucidesTotalInput = card.querySelector(".glucides-total");
-  const deleteBtn = card.querySelector(".delete-row");
-
-  select.addEventListener("change", () => {
-    const option = select.selectedOptions[0];
-    glucidesPortionInput.value = option ? option.dataset.glucides : 0;
-    calculerGlucidesPortionCarte();
-  });
-
-  nbPortionsInput.addEventListener("input", calculerGlucidesPortionCarte);
-
-  deleteBtn.addEventListener("click", () => {
-    card.remove();
-    calculerTotalGlucides();
-  });
-
-  function calculerGlucidesPortionCarte() {
-    const n = parseFloat(nbPortionsInput.value) || 0;
-    const g = parseFloat(glucidesPortionInput.value) || 0;
-    const total = n * g;
-    glucidesTotalInput.value = total.toFixed(1);
-    calculerTotalGlucides();
-  }
-
-  container.appendChild(card);
+function ajouterPortion() {
+  ajouterPortionGenerique(portions, "portion-body");
 }
 
-// Calcul total glucides
+function ajouterLaitier() {
+  ajouterPortionGenerique(produitsLaitiers, "laitier-body");
+}
+
+function ajouterPortionGenerique(liste, tbodyId) {
+  const tbody = document.getElementById(tbodyId);
+  const tr = document.createElement("tr");
+
+  tr.innerHTML = `
+    <td><select><option value="">-- Choisir --</option>
+      ${liste.map(p => `<option value="${p.aliment}" data-glucides="${p.glucides}">${p.aliment}</option>`).join("")}
+    </select></td>
+    <td><input type="number" class="glucides-portion" readonly></td>
+    <td><input type="number" class="nb-portions" min="0"></td>
+    <td><input type="number" class="glucides-total" readonly></td>
+    <td><button class="delete-row" onclick="supprimerLigne(this)">❌</button></td>`;
+
+  tbody.appendChild(tr);
+
+  tr.querySelector("select").onchange = function () {
+    const glucides = this.selectedOptions[0].dataset.glucides;
+    tr.querySelector(".glucides-portion").value = glucides;
+    calculerGlucidesPortion(tr);
+  };
+
+  tr.querySelector(".nb-portions").oninput = () => calculerGlucidesPortion(tr);
+}
+
+function supprimerLigne(btn) {
+  const tr = btn.closest("tr");
+  tr.remove();
+  calculerTotalGlucides();
+}
+
+function calculerGlucides(row) {
+  const qte = parseFloat(row.querySelector(".quantite").value) || 0;
+  const g = parseFloat(row.querySelector(".glucides-unit").value) || 0;
+  const total = (qte * g) / 100;
+  row.querySelector(".glucides-total").value = total.toFixed(1);
+  calculerTotalGlucides();
+}
+
+function calculerGlucidesPortion(row) {
+  const n = parseFloat(row.querySelector(".nb-portions").value) || 0;
+  const g = parseFloat(row.querySelector(".glucides-portion").value) || 0;
+  const total = n * g;
+  row.querySelector(".glucides-total").value = total.toFixed(1);
+  calculerTotalGlucides();
+}
+
 function calculerTotalGlucides() {
+  const totaux = document.querySelectorAll(".glucides-total");
   let total = 0;
-  document.querySelectorAll(".glucides-total").forEach(input => {
-    total += parseFloat(input.value) || 0;
-  });
+  totaux.forEach(input => total += parseFloat(input.value) || 0);
   document.getElementById("total-glucides").textContent = total.toFixed(1);
 }
 
-// Initialisation des cartes au chargement
-document.addEventListener('DOMContentLoaded', () => {
-  // Pour les féculents etc
-  creerCarteAliment();
-  // Pour les portions fruits
-  creerCartePortion(portions, portionContainer);
-  // Pour les produits laitiers
-  creerCartePortion(produitsLaitiers, laitierContainer);
+// Forcer le mode sombre
+document.addEventListener('DOMContentLoaded', function() {
+  document.body.classList.add('dark');
 });
 
-// Fonction pour basculer le mode sombre (si besoin)
+// Fonction pour basculer le mode sombre
 function toggleDarkMode() {
   document.body.classList.toggle('dark');
 }
+
+// Le reste de votre code JavaScript existant
+
+
+ajouterLigne();
+ajouterPortion();
+ajouterLaitier();
