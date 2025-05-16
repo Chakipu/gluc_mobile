@@ -140,6 +140,10 @@ function calculerTotalGlucides() {
   totaux.forEach(input => total += parseFloat(input.value) || 0);
   document.getElementById("total-glucides").textContent = total.toFixed(1);
 }
+document.addEventListener('DOMContentLoaded', function() {
+  // Forcer le mode sombre
+  document.body.classList.add('dark');
+}
 
 ajouterLigne();
 ajouterPortion();
