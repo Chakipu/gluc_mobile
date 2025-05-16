@@ -8,6 +8,27 @@
   <title>Calcul des glucides - Repas</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
+
+<script>
+  // Au chargement de la page, on vérifie si un thème est enregistré
+  document.addEventListener('DOMContentLoaded', function () {
+    const theme = localStorage.getItem('theme');
+    if (theme === 'dark') {
+      document.body.classList.add('dark');
+    }
+
+    const toggleBtn = document.querySelector('.toggle-darkmode');
+    toggleBtn.addEventListener('click', function () {
+      document.body.classList.toggle('dark');
+      // Enregistrer le thème actuel
+      const isDark = document.body.classList.contains('dark');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      // Changer l’icône (optionnel)
+      toggleBtn.textContent = isDark ? '☀️' : '🌙';
+    });
+  });
+</script>
+
 <body>
   <div class="banniere">
     <span>Calcul des glucides</span>
