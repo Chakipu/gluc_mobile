@@ -161,8 +161,22 @@
 
   <script src="script.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      document.body.classList.add('dark');
+    document.addEventListener('DOMContentLoaded', () => {
+      // Détecter le mode sombre selon les préférences systèmes
+      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+      } else {
+        document.body.classList.remove('dark');
+      }
+
+      // Optionnel : écouter les changements de préférence en temps réel
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+        if (e.matches) {
+          document.body.classList.add('dark');
+        } else {
+          document.body.classList.remove('dark');
+        }
+      });
     });
   </script>
 </body>
