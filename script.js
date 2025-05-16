@@ -146,6 +146,14 @@ document.addEventListener('DOMContentLoaded', function() {
   document.body.classList.add('dark');
 });
 
+// Fonction pour basculer le mode sombre
+function toggleDarkMode() {
+  document.body.classList.toggle('dark');
+}
+
+// Le reste de votre code JavaScript existant
+
+
 ajouterLigne();
 ajouterPortion();
 ajouterLaitier();
