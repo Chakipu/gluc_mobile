@@ -131,27 +131,3 @@ tfoot td {
 .delete-row:hover {
   color: var(--delete-hover);
 }
-
-/* Media query pour les petits écrans */
-@media (max-width: 600px) {
-  body {
-    font-size: 14px;
-  }
-
-  h1 {
-    font-size: 22px;
-  }
-
-  .add-row {
-    width: 100%;
-    margin-bottom: 10px;
-  }
-
-  table {
-    min-width: 100%;
-  }
-
-  th, td {
-    padding: 6px;
-  }
-}
